@@ -1,0 +1,131 @@
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
+<head>
+    <meta charset="UTF-8">
+    <title>Products</title>
+
+    <style>
+
+        body{
+        background:#f5f7fb;
+        }
+
+        .page-title{
+        font-weight:700;
+        }
+
+        .product-card{
+        border-radius:15px;
+        box-shadow:0 6px 18px rgba(0,0,0,0.08);
+        }
+
+        .product-img{
+        width:60px;
+        height:60px;
+        object-fit:cover;
+        border-radius:10px;
+        }
+
+        .price{
+        font-weight:600;
+        color:#e74c3c;
+        }
+
+        .table tbody tr:hover{
+        background:#eef5ff;
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<div layout:fragment="content" class="container mt-4">
+
+    <div class="d-flex justify-content-between mb-3">
+
+        <h3 class="page-title">📦 Danh Sách Sản Phẩm</h3>
+
+        <a th:href="@{/products/add}" class="btn btn-primary">
+            + Thêm sản phẩm
+        </a>
+
+    </div>
+
+    <div class="card product-card">
+
+        <div class="card-body">
+
+            <table class="table align-middle text-center">
+
+                <thead class="table-light">
+                <tr>
+                    <th>ID</th>
+                    <th>Ảnh</th>
+                    <th class="text-start">Tên</th>
+                    <th>Giá</th>
+                    <th>Danh mục</th>
+                    <th>Thao tác</th>
+                </tr>
+                </thead>
+
+                <tbody>
+
+                <tr th:each="product : ${products}">
+
+                    <td th:text="${product.id}"></td>
+
+                    <td>
+
+                        <img th:if="${product.image != null}"
+                             th:src="@{/images/{img}(img=${product.image})}"
+                             class="product-img">
+
+                    </td>
+
+                    <td class="text-start fw-semibold"
+                        th:text="${product.name}">
+                    </td>
+
+                    <td class="price"
+                        th:text="${product.price + ' ₫'}">
+                    </td>
+
+                    <td th:text="${product.category?.name}"></td>
+
+                    <td>
+
+                        <a th:href="@{/products/edit/{id}(id=${product.id})}"
+                           class="btn btn-warning btn-sm">
+                            Sửa
+                        </a>
+
+                        <form th:action="@{/products/delete/{id}(id=${product.id})}"
+                              method="post"
+                              style="display:inline">
+
+                            <button class="btn btn-danger btn-sm"
+                                    onclick="return confirm('Bạn có chắc muốn xóa?')">
+                                Xóa
+                            </button>
+
+                        </form>
+
+                    </td>
+
+                </tr>
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</div>
+
+</body>
+</html>
